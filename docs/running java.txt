@@ -1,0 +1,33 @@
+/home/kasra/bin/jdk1.8.0_121/bin/java 
+-javaagent:
+  /home/kasra/.local/share/JetBrains/Toolbox/apps/IDEA-U/ch-0/173.4301.25/lib/idea_rt.jar=33007:
+  /home/kasra/.local/share/JetBrains/Toolbox/apps/IDEA-U/ch-0/173.4301.25/bin 
+-Dfile.encoding=UTF-8 
+-classpath 
+  /home/kasra/bin/jdk1.8.0_121/jre/lib/charsets.jar:
+  /home/kasra/bin/jdk1.8.0_121/jre/lib/deploy.jar:
+  /home/kasra/bin/jdk1.8.0_121/jre/lib/ext/cldrdata.jar:
+  /home/kasra/bin/jdk1.8.0_121/jre/lib/ext/dnsns.jar:
+  /home/kasra/bin/jdk1.8.0_121/jre/lib/ext/jaccess.jar:
+  /home/kasra/bin/jdk1.8.0_121/jre/lib/ext/jfxrt.jar:
+  /home/kasra/bin/jdk1.8.0_121/jre/lib/ext/localedata.jar:  
+  /home/kasra/bin/jdk1.8.0_121/jre/lib/ext/nashorn.jar:
+  /home/kasra/bin/jdk1.8.0_121/jre/lib/ext/sunec.jar:
+  /home/kasra/bin/jdk1.8.0_121/jre/lib/ext/sunjce_provider.jar:
+  /home/kasra/bin/jdk1.8.0_121/jre/lib/ext/sunpkcs11.jar:
+  /home/kasra/bin/jdk1.8.0_121/jre/lib/ext/zipfs.jar:
+  /home/kasra/bin/jdk1.8.0_121/jre/lib/javaws.jar:
+  /home/kasra/bin/jdk1.8.0_121/jre/lib/jce.jar:
+  /home/kasra/bin/jdk1.8.0_121/jre/lib/jfr.jar: 
+  /home/kasra/bin/jdk1.8.0_121/jre/lib/jfxswt.jar:
+  /home/kasra/bin/jdk1.8.0_121/jre/lib/jsse.jar:
+  /home/kasra/bin/jdk1.8.0_121/jre/lib/management-agent.jar:
+  /home/kasra/bin/jdk1.8.0_121/jre/lib/plugin.jar:
+  /home/kasra/bin/jdk1.8.0_121/jre/lib/resources.jar:
+  /home/kasra/bin/jdk1.8.0_121/jre/lib/rt.jar:
+  /home/kasra/projects/cornerstone/out/production/classes:
+  /home/kasra/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk8/1.2.10/85fe1811f3e586d0cc53aba1394d8089f1862215/kotlin-stdlib-jdk8-1.2.10.jar:
+  /home/kasra/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk7/1.2.10/cfe8b616b3bf0811ef70863c86b745a2e767a66e/kotlin-stdlib-jdk7-1.2.10.jar:
+  /home/kasra/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.2.10/b9bf650516989595a5390e5a54181e16347208ac/kotlin-stdlib-1.2.10.jar:
+  /home/kasra/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar 
+MainKt

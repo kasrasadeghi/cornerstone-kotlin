@@ -1,14 +1,14 @@
 import java.io.File
 
-class Reader(filename: String) {
-  var array     = File(filename).readBytes()
+class Reader(filename: String?, array: String = "") {
+  var array     = if (filename != null) File(filename).readBytes() else array.toByteArray()
   var offset    = 0
 
   fun hasNext() = array.size > offset
 
   fun get()     = array[offset++].toChar()
 
-  fun peek()    = array[offset].toChar()
+  fun peek()    = if (offset == array.size) { 0.toChar() } else array[offset].toChar()
 
   fun prev()    = array[offset - 1].toChar()
 
