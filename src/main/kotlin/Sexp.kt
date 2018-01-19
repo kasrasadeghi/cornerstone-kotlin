@@ -1,6 +1,7 @@
-data class Sexp(var value: String, var list: ArrayList<Sexp> = ArrayList()) {
-  fun push(el: Sexp) {
-    list.add(el)
+data class Sexp(var value: String, var list: List<Sexp> = ArrayList()) {
+  fun push(el: Sexp): Sexp {
+    list += el
+    return this
   }
 
   override fun toString(): String {
@@ -12,4 +13,14 @@ data class Sexp(var value: String, var list: ArrayList<Sexp> = ArrayList()) {
         "$value\n" +
         list.joinToString("", "", "") { it.toString(level + 1)}
   }
+
+  operator fun get(i: Int) = list[i]
+
+  fun size() = list.size
+
+  /**
+   * Make a subSexp on [lower, upper)
+   */
+  fun subSexp(value: String, lower: Int, upper: Int) =
+      Sexp(value, list.subList(lower, upper))
 }

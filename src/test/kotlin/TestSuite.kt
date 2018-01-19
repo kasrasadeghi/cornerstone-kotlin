@@ -8,30 +8,42 @@ import java.io.IOException
 
 
 class TestSuite {
-  @TestFactory
-  fun createParserTests(): Collection<DynamicTest> {
+  private fun validTests(root: String): List<String> =
+      File(root).listFiles().toList().sorted()
+      .filter { it.name.endsWith(".bb") }
+      .map { it.name.substringBeforeLast(".") }
+      .filter { File(root).listFiles().toList().map { it.name }.contains(it + ".ok") }
 
-    val root = "tests/parser/"
-    val files = File(root).listFiles().toList().sorted()
+  private fun (List<String>).makeTests(root: String, function: (String) -> Sexp)
+      = this.map { DynamicTest.dynamicTest(it, { test(root, it, function) }) }
 
-    val validTests = files
-        .filter { it.name.endsWith(".bb") }
-        .map { it.name.substringBeforeLast(".") }
-        .filter { files.map { it.name }.contains(it + ".ok") }
+  private fun test(root: String, testName: String, function: (String) -> Sexp) {
+    val src = File(root + "$testName.bb").readText()
+    val ref = File(root + "$testName.ok").readText()
 
-    return validTests.map {
-      DynamicTest.dynamicTest(it, {
-        println(File(root + "$it.bb").readText())
-
-        val reference = File(root + "$it.ok").readText()
-
-        try {
-          val input = parse(root + "$it.bb").toString()
-          assertEquals(input.trim(), reference.trim())
-        } catch (e: IOException) {
-          assertTrue(reference.contains(e.message!!), "\"$reference\" does not contains \"${e.message!!}\" ")
-        }
-      })
+    try {
+      val input = function(testName).toString()
+      if (input.trim() != ref.trim()) {
+        println(src)
+      }
+      assertEquals(ref.trim(), input.trim())
+    } catch (e: IOException) {
+      if (!ref.contains(e.message!!)) {
+        println(src)
+        assertTrue(false, "\"$ref\" does not contains \"${e.message!!}\" ")
+      }
     }
+  }
+
+  @TestFactory
+  fun `parser tests`(): Collection<DynamicTest> {
+    val root = "tests/parser/"
+    return validTests(root).makeTests(root) { parse(root + "$it.bb") }
+  }
+
+  @TestFactory
+  fun `blockify tests`(): Collection<DynamicTest> {
+    val root = "tests/blockify/"
+    return validTests(root).makeTests(root) { parse(root + "$it.bb").blockify() }
   }
 }
