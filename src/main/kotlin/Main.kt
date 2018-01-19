@@ -5,6 +5,6 @@ fun main(args: Array<String>) {
     println("Usage: cornerstone <path>")
     exit(0)
   }
-  val program = parse(args[0]).blockify()
+  val program = parse(args[0]).Blockify().Become()
   print(program)
 }

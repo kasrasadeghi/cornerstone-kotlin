@@ -1,24 +1,24 @@
-fun (Sexp).blockify(): Sexp {
+fun (Sexp).Blockify(): Sexp {
   list = list.map {
     when (it.value) {
-      "def" -> container(it, 3).also { `do`(it[3]) }
+      "def" -> container(it, 3).also { it[3].`do`() }
       else  -> it
     }
   }
   return this
 }
 
-fun container(s: Sexp, i: Int) = with(s) {
+private fun container(s: Sexp, i: Int) = with(s) {
   subSexp(value, 0, i).push(subSexp("do", i, size()))
 }
 
-fun `do`(s: Sexp): Sexp {
-  s.list = s.list.map {
+private fun (Sexp).`do`(): Sexp {
+  list = list.map {
     when (it.value) {
-      "do" -> `do`(it)
+      "do" -> it.`do`()
       "if" -> container(it, 1)
       else -> it
     }
   }
-  return s
+  return this
 }
