@@ -38,18 +38,24 @@ class TestSuite {
   @TestFactory
   fun `Parser tests`(): Collection<DynamicTest> {
     val root = "tests/parser/"
-    return validTests(root).makeTests(root) { parse(root + "$it.bb") }
+    return validTests(root).makeTests(root) {
+      parse(root + "$it.bb")
+    }
   }
 
   @TestFactory
   fun `Blockify tests`(): Collection<DynamicTest> {
     val root = "tests/blockify/"
-    return validTests(root).makeTests(root) { parse(root + "$it.bb").Blockify() }
+    return validTests(root).makeTests(root) {
+      parse(root + "$it.bb").Blockify()
+    }
   }
 
   @TestFactory
   fun `Become tests`(): Collection<DynamicTest> {
     val root = "tests/become/"
-    return listOf("become").makeTests(root) { parse(root + "$it.bb").Blockify().Become() }
+    return validTests(root).makeTests(root) {
+      parse(root + "$it.bb").Blockify().Become()
+    }
   }
 }

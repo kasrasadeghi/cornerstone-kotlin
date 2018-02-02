@@ -22,7 +22,13 @@ private fun (Sexp).`do`(): Sexp {
     }
   }
 
-  //TODO put inserts into the surrounding list
+  list = list.flatMap {
+    when (it.value) {
+      "block" -> {it.list}
+      else -> listOf(it)
+    }
+  }
+
   return this
 }
 
@@ -31,7 +37,7 @@ private fun (Sexp).become(): Sexp {
   value = "call-tail"
   return if (returnType.value == "void") {
     //TODO consider making this a "do"
-    Sexp("insert", listOf(this, Sexp("return", listOf(Sexp("void")))))
+    Sexp("block", listOf(this, Sexp("return", listOf(Sexp("void")))))
   } else {
     Sexp("return", listOf(this, returnType))
   }
