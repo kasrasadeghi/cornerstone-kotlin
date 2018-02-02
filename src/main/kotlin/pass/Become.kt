@@ -1,3 +1,5 @@
+package pass
+
 fun (Sexp).Become(): Sexp {
   list = list.map {
     when (it.value) {

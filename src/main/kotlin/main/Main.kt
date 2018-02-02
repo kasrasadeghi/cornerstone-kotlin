@@ -1,3 +1,5 @@
+package main
+
 import java.lang.System.exit
 
 fun main(args: Array<String>) {

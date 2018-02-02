@@ -1,3 +1,5 @@
+package parse
+
 import java.io.File
 
 class Reader(filename: String?, array: String = "") {
