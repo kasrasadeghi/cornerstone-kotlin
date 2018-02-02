@@ -1,8 +1,12 @@
 
+import main.Sexp
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.TestFactory
+import parse.parse
+import pass.Become
+import pass.Blockify
 import java.io.File
 import java.io.IOException
 

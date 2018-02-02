@@ -1,5 +1,7 @@
 package pass
 
+import main.Sexp
+
 fun (Sexp).Blockify(): Sexp {
   list = list.map {
     when (it.value) {

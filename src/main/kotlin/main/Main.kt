@@ -1,5 +1,8 @@
 package main
 
+import parse.parse
+import pass.Become
+import pass.Blockify
 import java.lang.System.exit
 
 fun main(args: Array<String>) {
