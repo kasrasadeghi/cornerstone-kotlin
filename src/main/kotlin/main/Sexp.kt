@@ -1,6 +1,6 @@
 package main
 
-public data class Sexp(var value: String, var list: List<Sexp> = ArrayList()) {
+data class Sexp(var value: String, var list: List<Sexp> = ArrayList()) {
   fun push(el: Sexp): Sexp {
     list += el
     return this
