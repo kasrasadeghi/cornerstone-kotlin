@@ -2,7 +2,7 @@ package pass
 
 import main.Sexp
 
-fun (Sexp).Blockify(): Sexp {
+fun (Sexp).blockify(): Sexp {
   list = list.map {
     when (it.value) {
       "def" -> container(it, 3).also { it[3].`do`() }

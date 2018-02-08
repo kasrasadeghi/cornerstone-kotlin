@@ -1,8 +1,7 @@
 package main
 
 import parse.parse
-import pass.Become
-import pass.Blockify
+import pass.*
 import java.lang.System.exit
 
 fun main(args: Array<String>) {
@@ -10,6 +9,6 @@ fun main(args: Array<String>) {
     println("Usage: cornerstone <path>")
     exit(0)
   }
-  val program = parse(args[0]).Blockify().Become()
+  val program = parse(args[0]).blockify().becomeify().callStmt().normalize().qualify()
   print(program)
 }

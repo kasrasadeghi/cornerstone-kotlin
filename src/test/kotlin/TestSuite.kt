@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.TestFactory
 import parse.parse
-import pass.Become
-import pass.Blockify
+import pass.becomeify
+import pass.blockify
 import java.io.File
 import java.io.IOException
 
@@ -51,7 +51,7 @@ class TestSuite {
   fun `Blockify tests`(): Collection<DynamicTest> {
     val root = "tests/blockify/"
     return validTests(root).makeTests(root) {
-      parse(root + "$it.bb").Blockify()
+      parse(root + "$it.bb").blockify()
     }
   }
 
@@ -59,7 +59,7 @@ class TestSuite {
   fun `Become tests`(): Collection<DynamicTest> {
     val root = "tests/become/"
     return validTests(root).makeTests(root) {
-      parse(root + "$it.bb").Blockify().Become()
+      parse(root + "$it.bb").blockify().becomeify()
     }
   }
 }

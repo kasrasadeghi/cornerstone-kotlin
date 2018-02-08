@@ -2,7 +2,7 @@ package pass
 
 import main.Sexp
 
-fun (Sexp).Become(): Sexp {
+fun (Sexp).becomeify(): Sexp {
   list = list.map {
     when (it.value) {
       "def" -> it
