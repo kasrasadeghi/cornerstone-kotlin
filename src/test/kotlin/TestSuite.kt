@@ -7,6 +7,7 @@ import org.junit.jupiter.api.TestFactory
 import parse.parse
 import pass.becomeify
 import pass.blockify
+import pass.callStmt
 import java.io.File
 import java.io.IOException
 
@@ -60,6 +61,14 @@ class TestSuite {
     val root = "tests/become/"
     return validTests(root).makeTests(root) {
       parse(root + "$it.bb").blockify().becomeify()
+    }
+  }
+
+  @TestFactory
+  fun `CallStmt tests`(): Collection<DynamicTest> {
+    val root = "tests/callstmt/"
+    return validTests(root).makeTests(root) {
+      parse(root + "$it.bb").blockify().becomeify().callStmt()
     }
   }
 }

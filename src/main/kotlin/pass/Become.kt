@@ -5,9 +5,7 @@ import main.Sexp
 fun (Sexp).becomeify(): Sexp {
   list = list.map {
     when (it.value) {
-      "def" -> it
-          .subSexp(it.value, 0, 3)
-          .push(it[3].`do`())
+      "def" -> it.subSexp(it.value, 0, 3).push(it[3].`do`())
       else  -> it
     }
   }
