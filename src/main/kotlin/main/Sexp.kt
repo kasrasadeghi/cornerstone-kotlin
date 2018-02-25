@@ -1,8 +1,11 @@
 package main
 
-data class Sexp(var value: String, var list: List<Sexp> = ArrayList()) {
+data class Sexp(var value: String, var list: ArrayList<Sexp> = ArrayList()) {
+  constructor(value: String, vararg list: Sexp) : this(value, ArrayList(listOf(*list)))
+  constructor(value: String, list: List<Sexp>) : this(value, ArrayList(list))
+
   fun push(el: Sexp): Sexp {
-    list += el
+    list.add(el)
     return this
   }
 
@@ -11,9 +14,10 @@ data class Sexp(var value: String, var list: List<Sexp> = ArrayList()) {
   }
 
   private fun toString(level: Int): String {
-    return (0 until level).joinToString("", "", "") {"  "} +
+    fun <T> (Iterable<T>).simpleJoin(f: (T) -> CharSequence) = joinToString("", "", "", transform = f)
+    return (0 until level).simpleJoin {"  "} +
         "$value\n" +
-        list.joinToString("", "", "") { it.toString(level + 1)}
+        list.simpleJoin { it.toString(level + 1)}
   }
 
   operator fun get(i: Int) = list[i]
@@ -25,4 +29,21 @@ data class Sexp(var value: String, var list: List<Sexp> = ArrayList()) {
    */
   fun subSexp(value: String, lower: Int, upper: Int) =
       Sexp(value, list.subList(lower, upper))
+
+  fun map(f: (Sexp) -> Sexp): Sexp {
+    list = ArrayList(list.map(f))
+    return this
+  }
+
+  fun flatMap(f: (Sexp) -> List<Sexp>): Sexp {
+    list = ArrayList(list.flatMap(f))
+    return this
+  }
+
+  fun doAt(vararg `i's`: Int, f: (Sexp) -> Sexp): Sexp {
+    for (i in `i's`) {
+      list[i] = f(list[i])
+    }
+    return this
+  }
 }

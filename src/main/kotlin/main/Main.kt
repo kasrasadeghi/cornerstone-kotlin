@@ -9,6 +9,6 @@ fun main(args: Array<String>) {
     println("Usage: cornerstone <path>")
     exit(0)
   }
-  val program = parse(args[0]).blockify().becomeify().callStmt().normalize().qualify()
+  val program = parse(args[0]).blockify().becomeify().callStmt().bindify().normalize().qualify()
   print(program)
 }
