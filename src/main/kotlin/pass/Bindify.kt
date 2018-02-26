@@ -6,21 +6,23 @@ fun (Sexp).bindify(): Sexp =
     map {
       when (it.value) {
         "def" -> it.also { initLocals(it) }.doAt(3) { it.`do`() }
-        else -> it
+        else  -> it
       }
     }
 
 private fun (Sexp).`do`(): Sexp =
     map {
       when (it.value) {
-        "let" -> it.let()
-        "return" -> if (it.list.size == 1) it else it.doAt(0) { it.bind() }
-        "if" -> it.doAt(0) { it.bind() }.doAt(1) { it.`do`() }
-        "store" -> it.doAt(0, 2) { it.bind() }
-        "do" -> it.`do`()
-        "call", "call-tail", "call-vargs" -> it.doAt(3) { it.map { it.bind() } }
-        "auto" -> it
-        else -> throw IllegalStateException("illegal statement found \n${this}")
+        "let"        -> it.let()
+        "return"     -> if (it.list.size == 1) it else it.doAt(0) { it.bind() }
+        "if"         -> it.doAt(0) { it.bind() }.doAt(1) { it.`do`() }
+        "store"      -> it.doAt(0, 2) { it.bind() }
+        "do"         -> it.`do`()
+        "auto"       -> it
+        "call",
+        "call-tail",
+        "call-vargs" -> it.doAt(3) { it.map { it.bind() } }
+        else         -> throw IllegalStateException("illegal statement found \n${this}")
       }
     }
 
