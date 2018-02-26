@@ -14,8 +14,9 @@ private fun (Sexp).`do`(): Sexp =
     map {
       when (it.value) {
         "let"        -> it.let()
-        "return"     -> if (it.list.size == 1) it else it.doAt(0) { it.bind() }
-        "if"         -> it.doAt(0) { it.bind() }.doAt(1) { it.`do`() }
+        "return"     -> if (it.list.size == 1) it else
+                        it.doAt(0)    { it.bind() }
+        "if"         -> it.doAt(0)    { it.bind() }.doAt(1) { it.`do`() }
         "store"      -> it.doAt(0, 2) { it.bind() }
         "do"         -> it.`do`()
         "auto"       -> it
@@ -30,11 +31,11 @@ private fun (Sexp).let(): Sexp = doAt(1) { it.expr() }
 
 private fun (Sexp).expr(): Sexp {
   return when (value) {
-    "call", "call-tail", "call-vargs"     -> doAt(3) { it.map { it.bind() } }
+    "call", "call-tail", "call-vargs"     -> doAt(3)    { it.map { it.bind() } }
     "+", "<", ">", "<=", ">=", "!=", "==" -> doAt(1, 2) { it.bind() }
-    "load"                                -> doAt(1) { it.bind() }
+    "load"                                -> doAt(1)    { it.bind() }
     "index"                               -> doAt(0, 2) { it.bind() }
-    "cast"                                -> doAt(2) { it.bind() }
+    "cast"                                -> doAt(2)    { it.bind() }
     else                                  -> throw IllegalStateException("expecting expression at \n${this}")
   }
 }
