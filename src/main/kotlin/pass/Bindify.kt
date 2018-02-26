@@ -22,7 +22,7 @@ private fun (Sexp).`do`(): Sexp =
         "call",
         "call-tail",
         "call-vargs" -> it.doAt(3) { it.map { it.bind() } }
-        else         -> throw IllegalStateException("illegal statement found \n${this}")
+        else         -> throw IllegalStateException("illegal statement found \n$it")
       }
     }
 
@@ -35,7 +35,7 @@ private fun (Sexp).expr(): Sexp {
     "load"                                -> doAt(1) { it.bind() }
     "index"                               -> doAt(0, 2) { it.bind() }
     "cast"                                -> doAt(2) { it.bind() }
-    else                                  -> throw IllegalStateException("non expression found in expression")
+    else                                  -> throw IllegalStateException("expecting expression at \n${this}")
   }
 }
 
