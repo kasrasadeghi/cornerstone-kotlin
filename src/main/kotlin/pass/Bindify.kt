@@ -14,25 +14,26 @@ private fun (Sexp).`do`(): Sexp =
     map {
       when (it.value) {
         "let" -> it.let()
-        "return" -> if (it.list.size == 2) it else it.doAt(1) { it.bind() }
+        "return" -> if (it.list.size == 1) it else it.doAt(0) { it.bind() }
         "if" -> it.doAt(0) { it.bind() }.doAt(1) { it.`do`() }
         "store" -> it.doAt(0, 2) { it.bind() }
         "do" -> it.`do`()
+        "call", "call-tail", "call-vargs" -> it.doAt(3) { it.map { it.bind() } }
         "auto" -> it
-        else -> throw IllegalStateException()
+        else -> throw IllegalStateException("illegal statement found \n${this}")
       }
     }
 
-private fun (Sexp).let(): Sexp = this.doAt(1) { it.expr() }
+private fun (Sexp).let(): Sexp = doAt(1) { it.expr() }
 
 private fun (Sexp).expr(): Sexp {
   return when (value) {
-    "call", "call-tail", "call-vargs"     -> this.doAt(3) { it.map { it.bind()} }
-    "+", "<", ">", "<=", ">=", "!=", "==" -> this.doAt(1, 2) { it.bind() }
-    "load" -> this.doAt(1) { it.bind() }
-    "index" -> this.doAt(0, 2) { it.bind() }
-    "cast" -> this.doAt(2) { it.bind() }
-    else -> throw IllegalStateException()
+    "call", "call-tail", "call-vargs"     -> doAt(3) { it.map { it.bind() } }
+    "+", "<", ">", "<=", ">=", "!=", "==" -> doAt(1, 2) { it.bind() }
+    "load"                                -> doAt(1) { it.bind() }
+    "index"                               -> doAt(0, 2) { it.bind() }
+    "cast"                                -> doAt(2) { it.bind() }
+    else                                  -> throw IllegalStateException("non expression found in expression")
   }
 }
 

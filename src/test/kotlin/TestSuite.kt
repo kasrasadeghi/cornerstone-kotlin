@@ -6,6 +6,7 @@ import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.TestFactory
 import parse.parse
 import pass.becomeify
+import pass.bindify
 import pass.blockify
 import pass.callStmt
 import java.io.File
@@ -69,6 +70,14 @@ class TestSuite {
     val root = "tests/callstmt/"
     return validTests(root).makeTests(root) {
       parse(root + "$it.bb").blockify().becomeify().callStmt()
+    }
+  }
+
+  @TestFactory
+  fun `Bindify tests`(): Collection<DynamicTest> {
+    val root = "tests/bindify/"
+    return validTests(root).makeTests(root) {
+      parse(root + "$it.bb").blockify().becomeify().callStmt().bindify()
     }
   }
 }
