@@ -22,3 +22,13 @@ private fun (Sexp).`do`(): Sexp =
       else -> it
     }
   }
+
+/*
+
+(@(* Stmt) => (do (* this)))
+(@(* Stmt) => (do this))
+
+(@Def this:(def _ _ _ *stmts)
+  (gen (def _ _ _ (do *stmts))))
+
+ */
