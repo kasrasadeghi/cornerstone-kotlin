@@ -49,7 +49,9 @@ Languages = data structure repr. with a Trie
 
 ---
 
+```
 (Grammar, Compiler DSL) -> (Language-Sexp -> Language-Sexp)
+```
 
 The Type of a piece of source is Language-Sexp.
 The Type of a Language-Sexp is its Language.
