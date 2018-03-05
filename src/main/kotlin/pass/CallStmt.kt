@@ -25,3 +25,10 @@ private fun (Sexp).call(): Sexp {
   if ("void" == this[2].value) return this
   return Sexp("let", Sexp("$" + newLocal().toString()), this)
 }
+
+/*
+(@Stmt s
+  (CallLike (do
+    (let local (call newlocal (types) (args)))
+    (gen (let local s))))
+*/

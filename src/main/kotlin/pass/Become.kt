@@ -43,15 +43,21 @@ private fun (Sexp).become(): Sexp {
     (gen (block $this (return void))
     (gen (return $this [2]))))
 
+----------------------------------
+
 (@Stmt this:(become function-name arg-types return-type args)
   (if-else (== return-type "void")
     (gen (block $this (return void))
     (gen (return $this $return-type))))
 
+----------------------------------
+
 (@Stmt this:(become _ _ return-type _)
   (if-else (== return-type "void")
     (gen (block this (return `void`))
     (gen (return this return-type))))
+
+----------------------------------
 
 (@Stmt this:(become _ _ return-type _)
   (if-else (== return-type "void")
