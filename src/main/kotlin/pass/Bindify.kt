@@ -52,4 +52,17 @@ private fun (Sexp).isTall(): Boolean = value in setOf(
     "+", "<", ">", "<=", ">=", "!=", "==",
     "load", "index", "cast")
 
+/*
+(-> bind e:Expr Value
+  (when e
+    (Value e)
+    (else  (do
+      (let local (call local.new (types) (args)))
+      (gen (bind local (let local e)))))))
+
+(@Expr e
+  (context e
+    ((let #name e) (let #name e))
+    (else (bind e))
+*/
 
