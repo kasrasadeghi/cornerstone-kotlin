@@ -1,0 +1,16 @@
+slt.bb
+  def
+    main
+    params
+      argc
+        i32
+      argv
+        i8**
+    i32
+    do
+      return
+        <
+          i32
+          argc
+          2
+        i32
