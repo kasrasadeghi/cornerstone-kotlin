@@ -1,7 +1,7 @@
 package pass
 
-import main.Sexp
+import main.Texp
 
-fun (Sexp).qualify(): Sexp {
+fun (Texp).qualify(): Texp {
   return this
 }

@@ -1,8 +1,8 @@
 package pass
 
-import main.Sexp
+import main.Texp
 
-fun (Sexp).becomeify(): Sexp =
+fun (Texp).becomeify(): Texp =
   map {
     when (it.value) {
       "def" -> it.doAt(3) { it.`do`() }
@@ -10,7 +10,7 @@ fun (Sexp).becomeify(): Sexp =
     }
   }
 
-private fun (Sexp).`do`(): Sexp =
+private fun (Texp).`do`(): Texp =
   map {
     when (it.value) {
       "become" -> it.become()
@@ -25,14 +25,14 @@ private fun (Sexp).`do`(): Sexp =
     }
   }
 
-private fun (Sexp).become(): Sexp {
+private fun (Texp).become(): Texp {
   val returnType = this[2]
   value = "call-tail"
   return if (returnType.value == "void") {
     //TODO consider making this a "do"
-    Sexp("block", this, Sexp("return", Sexp("void")))
+    Texp("block", this, Texp("return", Texp("void")))
   } else {
-    Sexp("return", this, returnType)
+    Texp("return", this, returnType)
   }
 }
 

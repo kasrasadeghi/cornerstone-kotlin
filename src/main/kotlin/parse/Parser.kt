@@ -1,10 +1,10 @@
 package parse
 
-import main.Sexp
+import main.Texp
 import java.io.File
 import java.io.IOException
 
-fun parse(filename: String): Sexp {
+fun parse(filename: String): Texp {
   val r = Reader(filename).removeComments()
   return pProgram(filename, r)
 }
@@ -33,30 +33,30 @@ fun (Reader).removeComments(): Reader {
   return this
 }
 
-fun pProgram(filename: String, r: Reader): Sexp {
-  val program = Sexp(File(filename).name)
+fun pProgram(filename: String, r: Reader): Texp {
+  val program = Texp(File(filename).name)
   while (r.hasNext()) {
-    program.push(pSexp(r))
+    program.push(pTexp(r))
     pWhitespace(r)
   }
   pWhitespace(r)
   return program
 }
 
-fun pSexp(r: Reader): Sexp {
+fun pTexp(r: Reader): Texp {
   pWhitespace(r)
   if (r.peek() == '(') return pList(r)
   return pAtom(r)
 }
 
-fun pList(r: Reader): Sexp {
+fun pList(r: Reader): Texp {
   assert(r.get() == '(')
-  val curr = Sexp(pWord(r))
+  val curr = Texp(pWord(r))
   while (r.peek() != ')') {
     if (!r.hasNext()) {
       throw IOException("unmatched paren for list")
     }
-    curr.push(pSexp(r))
+    curr.push(pTexp(r))
     pWhitespace(r)
   }
 
@@ -64,9 +64,9 @@ fun pList(r: Reader): Sexp {
   return curr
 }
 
-fun pAtom(r: Reader): Sexp {
-  fun pBoundedAtom(delim: Char, errorMessage: String): (Reader) -> Sexp {
-    return fun (r: Reader): Sexp {
+fun pAtom(r: Reader): Texp {
+  fun pBoundedAtom(delim: Char, errorMessage: String): (Reader) -> Texp {
+    return fun (r: Reader): Texp {
       var string = ""
       assert(r.peek() == delim)
       string += r.get()
@@ -80,14 +80,14 @@ fun pAtom(r: Reader): Sexp {
 
       assert(r.peek() == delim && r.prev() != '\\')
       string += r.get()
-      return Sexp(string)
+      return Texp(string)
     }
   }
 
   return when (r.peek()) {
     '\"' -> pBoundedAtom('\"', "unmatched quote for string")(r)
     '\'' -> pBoundedAtom('\'', "unmatched apostrophe for char")(r)
-    else -> Sexp(pWord(r))
+    else -> Texp(pWord(r))
   }
 }
 

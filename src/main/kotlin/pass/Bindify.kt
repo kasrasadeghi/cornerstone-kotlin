@@ -1,8 +1,8 @@
 package pass
 
-import main.Sexp
+import main.Texp
 
-fun (Sexp).bindify(): Sexp =
+fun (Texp).bindify(): Texp =
     map {
       when (it.value) {
         "def" -> it.also { initLocals(it) }.doAt(3) { it.`do`() }
@@ -10,7 +10,7 @@ fun (Sexp).bindify(): Sexp =
       }
     }
 
-private fun (Sexp).`do`(): Sexp =
+private fun (Texp).`do`(): Texp =
     map {
       when (it.value) {
         "let"        -> it.let()
@@ -27,9 +27,9 @@ private fun (Sexp).`do`(): Sexp =
       }
     }
 
-private fun (Sexp).let(): Sexp = doAt(1) { it.expr() }
+private fun (Texp).let(): Texp = doAt(1) { it.expr() }
 
-private fun (Sexp).expr(): Sexp {
+private fun (Texp).expr(): Texp {
   return when (value) {
     "call", "call-tail", "call-vargs"     -> doAt(3)    { it.map { it.bind() } }
     "+", "<", ">", "<=", ">=", "!=", "==" -> doAt(1, 2) { it.bind() }
@@ -40,14 +40,14 @@ private fun (Sexp).expr(): Sexp {
   }
 }
 
-private fun (Sexp).bind(): Sexp {
+private fun (Texp).bind(): Texp {
   return if (this.isTall()) {
     val local = "$" + newLocal().toString()
-    Sexp("bind", Sexp(local), Sexp("let", Sexp(local), this).let())
+    Texp("bind", Texp(local), Texp("let", Texp(local), this).let())
   } else this
 }
 
-private fun (Sexp).isTall(): Boolean = value in setOf(
+private fun (Texp).isTall(): Boolean = value in setOf(
     "call", "call-tail", "call-vargs",
     "+", "<", ">", "<=", ">=", "!=", "==",
     "load", "index", "cast")

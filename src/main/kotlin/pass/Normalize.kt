@@ -1,5 +1,5 @@
 package pass
 
-import main.Sexp
+import main.Texp
 
-fun (Sexp).normalize(): Sexp = this
+fun (Texp).normalize(): Texp = this

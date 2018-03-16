@@ -2,13 +2,13 @@ Cornerstone Compiler Infrastructure
 
 +++
 
-Grammar of Sexp
+Grammar of Texp
 ```
-Sexp = (#word (* Sexp))
+Texp = (#word (* Texp))
 
   ~=
   
-Sexp := word Sexp*
+Texp := word Texp*
 ```
 
 +++
@@ -18,24 +18,24 @@ Parser Expression Grammars/Packrat Parsers
 
 +++
 
-Sexp in C
+Texp in C
 ```c
-typedef struct Sexp {
+typedef struct Texp {
   char* value;
-  struct Sexp** list;
+  struct Texp** list;
   size_t len;
   size_t cap;
-} Sexp;
+} Texp;
 ```
 
-Sexp in Haskell
+Texp in Haskell
 ```haskell
-type Sexp = String [Sexp]
+type Texp = String [Texp]
 ```
 
 +++
 
-Sexp's are Tries, but with:
+Texp's are Tries, but with:
  - contiguous memory 
  - pointers
 
@@ -50,11 +50,11 @@ Languages = data structure repr. with a Trie
 ---
 
 ```
-(Grammar, Compiler DSL) -> (Language-Sexp -> Language-Sexp)
+(Grammar, Compiler DSL) -> (Language-Texp -> Language-Texp)
 ```
 
-The Type of a piece of source is Language-Sexp.
-The Type of a Language-Sexp is its Language.
+The Type of a piece of source is Language-Texp.
+The Type of a Language-Texp is its Language.
 
 +++
 

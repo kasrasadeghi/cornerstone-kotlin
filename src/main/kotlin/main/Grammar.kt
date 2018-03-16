@@ -2,9 +2,9 @@ package main
 
 import parse.parse
 
-fun parseGrammar(filePath: String): Map<String, Sexp> {
-  val grammarSexp = parse(filePath)[0]
-  return grammarSexp.list.map { it.value to it[0] }.toMap()
+fun parseGrammar(filePath: String): Map<String, Texp> {
+  val grammarTexp = parse(filePath)[0]
+  return grammarTexp.list.map { it.value to it[0] }.toMap()
 }
 
 /**
@@ -17,7 +17,7 @@ fun parseGrammar(filePath: String): Map<String, Sexp> {
  *  - String are lower-case and are matched lexicographically
  *  - Value classes start with a hash ('#') and correlate with a set/regular expression.
  */
-fun validate(grammar: Map<String, Sexp>, program: Sexp, type: String): Boolean {
+fun validate(grammar: Map<String, Texp>, program: Texp, type: String): Boolean {
   // match primitive rule
   fun matchValue(type: String): Boolean {
     println("  match ${program.value} with $type")
@@ -34,7 +34,7 @@ fun validate(grammar: Map<String, Sexp>, program: Sexp, type: String): Boolean {
   }
 
   // match child sequences using naive regular expressions
-  fun matchChildren(rule: Sexp): Boolean {
+  fun matchChildren(rule: Texp): Boolean {
     //region check(current kleene restrictions for rule) //TODO remove
     //TODO grammar validation tests
     //TODO move the checks for kleene restrictions to a separate validation of only the grammar

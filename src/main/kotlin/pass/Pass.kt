@@ -1,13 +1,13 @@
 package pass
 
-import main.Sexp
+import main.Texp
 
 //region gen-local
 
 var stackCounter = 0
 var foundStack = false
 
-fun initLocals(s: Sexp) {
+fun initLocals(s: Texp) {
   foundStack = false
   s.`do`()
 
@@ -18,7 +18,7 @@ fun newLocal(): Int {
   return stackCounter++
 }
 
-private fun (Sexp).`do`() {
+private fun (Texp).`do`() {
   list.forEach {
     when (it.value) {
       "let" -> it.let()
@@ -33,7 +33,7 @@ private fun (Sexp).`do`() {
  * stack. Upon completion of traversal, stackCounter is incremented, thus
  * representing the next available gen-local.
  */
-private fun (Sexp).let() {
+private fun (Texp).let() {
   assert(value.isNotEmpty())
 
   if (value[0] != '$') return // not a gen-local

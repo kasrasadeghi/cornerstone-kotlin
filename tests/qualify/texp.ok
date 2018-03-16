@@ -1,19 +1,19 @@
-sexp.bb
+texp.bb
   struct
-    Sexp
+    Texp
     value
       i8*
     list
-      %struct.Sexp**
+      %struct.Texp**
     len
       i64
     cap
       i64
   str-table
     0
-      "Sexp{value: %s, len: %lu}\0A\00"
+      "Texp{value: %s, len: %lu}\0A\00"
     1
-      "Example Sexp"
+      "Example Texp"
   decl
     malloc
     types
@@ -26,18 +26,18 @@ sexp.bb
       i64
     i8*
   def
-    makeSexp
+    makeTexp
     params
       value
         i8*
       length
         i64
-    %struct.Sexp*
+    %struct.Texp*
     let
       r
       cast
         i8*
-        %struct.Sexp*
+        %struct.Texp*
         call
           malloc
           types
@@ -50,7 +50,7 @@ sexp.bb
       i8*
       index
         r
-        %struct.Sexp
+        %struct.Texp
         0
     if
       =
@@ -59,10 +59,10 @@ sexp.bb
         0
       store
         0
-        %struct.Sexp**
+        %struct.Texp**
         index
           r
-          %struct.Sexp
+          %struct.Texp
           1
     if
       !=
@@ -72,7 +72,7 @@ sexp.bb
       store
         cast
           i8*
-          %struct.Sexp**
+          %struct.Texp**
           call
             calloc
             types
@@ -82,28 +82,28 @@ sexp.bb
             args
               length
               32
-        %struct.Sexp**
+        %struct.Texp**
         index
           r
-          %struct.Sexp
+          %struct.Texp
           1
     store
       length
       i64
       index
         r
-        %struct.Sexp
+        %struct.Texp
         2
     store
       length
       i64
       index
         r
-        %struct.Sexp
+        %struct.Texp
         3
     return
       r
-      %struct.Sexp*
+      %struct.Texp*
   decl
     printf
     types
@@ -126,11 +126,11 @@ sexp.bb
     let
       s
       call
-        makeSexp
+        makeTexp
         types
           i8*
           i64
-        %struct.Sexp*
+        %struct.Texp*
         args
           str-get
             1
@@ -149,13 +149,13 @@ sexp.bb
           i8*
           index
             s
-            %struct.Sexp
+            %struct.Texp
             0
         load
           i64
           index
             s
-            %struct.Sexp
+            %struct.Texp
             2
     call
       free
@@ -164,7 +164,7 @@ sexp.bb
       void
       args
         cast
-          %struct.Sexp*
+          %struct.Texp*
           i8*
           s
     return

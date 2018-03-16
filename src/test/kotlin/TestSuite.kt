@@ -1,5 +1,5 @@
 
-import main.Sexp
+import main.Texp
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
@@ -18,7 +18,7 @@ class TestSuite {
   companion object {
     @JvmStatic @BeforeAll
     fun setup() {
-      Sexp.PREF_LISP = false
+      Texp.PREF_LISP = false
     }
   }
 
@@ -28,10 +28,10 @@ class TestSuite {
       .map { it.name.substringBeforeLast(".") }
       .filter { File(root).listFiles().toList().map { it.name }.contains(it + ".ok") }
 
-  private fun (List<String>).makeTests(root: String, function: (String) -> Sexp)
+  private fun (List<String>).makeTests(root: String, function: (String) -> Texp)
       = this.map { DynamicTest.dynamicTest(it, { test(root, it, function) }) }
 
-  private fun test(root: String, testName: String, function: (String) -> Sexp) {
+  private fun test(root: String, testName: String, function: (String) -> Texp) {
     val src = File(root + "$testName.bb").readText()
     val ref = File(root + "$testName.ok").readText()
 

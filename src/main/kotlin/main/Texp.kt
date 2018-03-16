@@ -1,14 +1,14 @@
 package main
 
-data class Sexp(var value: String, var list: ArrayList<Sexp> = ArrayList()) {
-  constructor(value: String, vararg list: Sexp) : this(value, ArrayList(listOf(*list)))
-  constructor(value: String, list: List<Sexp>) : this(value, ArrayList(list))
+data class Texp(var value: String, var list: ArrayList<Texp> = ArrayList()) {
+  constructor(value: String, vararg list: Texp) : this(value, ArrayList(listOf(*list)))
+  constructor(value: String, list: List<Texp>) : this(value, ArrayList(list))
 
   companion object {
     var PREF_LISP = true
   }
 
-  fun push(el: Sexp): Sexp {
+  fun push(el: Texp): Texp {
     list.add(el)
     return this
   }
@@ -33,22 +33,22 @@ data class Sexp(var value: String, var list: ArrayList<Sexp> = ArrayList()) {
   fun size() = list.size
 
   /**
-   * Make a subSexp on [lower, upper)
+   * Make a subTexp on [lower, upper)
    */
-  fun subSexp(value: String, lower: Int, upper: Int) =
-      Sexp(value, list.subList(lower, upper))
+  fun subTexp(value: String, lower: Int, upper: Int) =
+      Texp(value, list.subList(lower, upper))
 
-  fun map(f: (Sexp) -> Sexp): Sexp {
+  fun map(f: (Texp) -> Texp): Texp {
     list = ArrayList(list.map(f))
     return this
   }
 
-  fun flatMap(f: (Sexp) -> List<Sexp>): Sexp {
+  fun flatMap(f: (Texp) -> List<Texp>): Texp {
     list = ArrayList(list.flatMap(f))
     return this
   }
 
-  fun doAt(vararg `i's`: Int, f: (Sexp) -> Sexp): Sexp {
+  fun doAt(vararg `i's`: Int, f: (Texp) -> Texp): Texp {
     for (i in `i's`) {
       list[i] = f(list[i])
     }

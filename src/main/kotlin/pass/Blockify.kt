@@ -1,8 +1,8 @@
 package pass
 
-import main.Sexp
+import main.Texp
 
-fun (Sexp).blockify(): Sexp =
+fun (Texp).blockify(): Texp =
   map {
     when (it.value) {
       "def" -> container(it, 3).also { it[3].`do`() }
@@ -10,11 +10,11 @@ fun (Sexp).blockify(): Sexp =
     }
   }
 
-private fun container(s: Sexp, i: Int) = with(s) {
-  subSexp(value, 0, i).push(subSexp("do", i, size()))
+private fun container(s: Texp, i: Int) = with(s) {
+  subTexp(value, 0, i).push(subTexp("do", i, size()))
 }
 
-private fun (Sexp).`do`(): Sexp =
+private fun (Texp).`do`(): Texp =
   map {
     when (it.value) {
       "do" -> it.`do`()

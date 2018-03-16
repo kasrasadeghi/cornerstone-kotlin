@@ -1,8 +1,8 @@
 package pass
 
-import main.Sexp
+import main.Texp
 
-fun (Sexp).callStmt(): Sexp =
+fun (Texp).callStmt(): Texp =
   map {
     when (it.value) {
       "def" -> it.also { initLocals(it) }.doAt(3) { it.`do`() }
@@ -11,7 +11,7 @@ fun (Sexp).callStmt(): Sexp =
   }
 
 
-private fun (Sexp).`do`(): Sexp =
+private fun (Texp).`do`(): Texp =
   map {
     when (it.value) {
       "call", "call-tail", "call-vargs" -> it.call()
@@ -21,9 +21,9 @@ private fun (Sexp).`do`(): Sexp =
     }
   }
 
-private fun (Sexp).call(): Sexp {
+private fun (Texp).call(): Texp {
   if ("void" == this[2].value) return this
-  return Sexp("let", Sexp("$" + newLocal().toString()), this)
+  return Texp("let", Texp("$" + newLocal().toString()), this)
 }
 
 /*
