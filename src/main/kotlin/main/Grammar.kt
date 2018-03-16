@@ -26,22 +26,17 @@ fun validate(grammar: Map<String, Sexp>, program: Sexp, type: String): Boolean {
         "#name" -> true
         "#nat" -> program.value[0] != '-' && program.value.toIntOrNull() != null
         "#string" -> program.value[0] == '"' && program.value.last() == '"'
+        "#type" -> true
         else -> throw GrammarError("unmatched value class: $rule")
       }
-    } else rule == program.value
-  }
-
-  fun matchSequence(program: Sexp, types: List<String>) {
-
+    } else if (rule != program.value) throw GrammarError("$rule does not match ${program.value}") else true
   }
 
   // match child sequences using naive regular expressions
   fun matchChildren(rule: Sexp): Boolean {
-    println("matching ${program.list} with ${rule.list}")
-
+    //region check(current kleene restrictions for rule) //TODO remove
     //TODO grammar validation tests
     //TODO move the checks for kleene restrictions to a separate validation of only the grammar
-    //region check(current kleene restrictions for rule)
 
     // only use *
 
@@ -58,8 +53,9 @@ fun validate(grammar: Map<String, Sexp>, program: Sexp, type: String): Boolean {
 
     // convert to strings where *'s get appended to front
     val types = rule.list.map { if (it.size() == 0) it.value else it.value + it[0].value}
+    println("matching ${program.list} with $types")
 
-    if (types.last() == "*") {
+    if (types.last()[0] == '*') {
       check(types.size - 1 <= program.list.size) { "length of $program is not at least ${types.size - 1}" }
       // check things before star
       for (match in program.list.zip(types).take(types.size - 1)) {
@@ -67,12 +63,11 @@ fun validate(grammar: Map<String, Sexp>, program: Sexp, type: String): Boolean {
         validate(grammar, child, childType)
       }
       for (child in program.list.drop(types.size - 1)) {
-        println("hello world ${types.last()[0]}")
-        validate(grammar, child, types.last())
+        validate(grammar, child, types.last().substring(1))
       }
     } else {
       check(types.size == program.list.size)
-      { "when lacking a kleene-*, the Texp must have the same length as the rule" }
+          { "when lacking a kleene-*, the Texp must have the same length as the rule" }
       for (match in program.list.zip(types)) {
         val (child, childType) = match
         validate(grammar, child, childType)
@@ -83,31 +78,35 @@ fun validate(grammar: Map<String, Sexp>, program: Sexp, type: String): Boolean {
 
   println(type)
 
+  // primitive type
   if (type[0].isLowerCase() || type[0] == '#') {
     println("primitive matching")
     return matchValue(type)
   }
 
+  // non primitive types need to be looked up
   val rule = grammar[type]!!
 
+  // choice operator
   if (rule.value == "|") {
     val choices = rule.list.map { it.value }
     println("matching \n$program with choice of $choices")
 
     for (choice in choices) {
       try {
-        if (validate(grammar, program, choice)) return true
-      } catch (e: IllegalStateException) {
-        error(e.message ?: e)
-      }
+        if (validate(grammar, program, choice)) {
+          println("$program matches choice of $choice")
+          return true
+        }
+      } catch (e: IllegalStateException) {}
     }
 
     throw GrammarError("\n$program did not match any choice of \n$choices")
   }
-  // @below, not a choice operator
 
-  //TODO @below, which is better?
-  /* return */ matchValue(rule.value) && matchChildren(rule)
+  // non primitive production
+  if (!matchValue(rule.value)) throw GrammarError("")
+  matchChildren(rule)
   return true
 }
 

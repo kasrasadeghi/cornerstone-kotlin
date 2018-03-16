@@ -1,0 +1,5 @@
+(cornerstone
+  (Program   (#name StrTable))
+  (StrTable  (str-table (* StrEntry)))
+  (StrEntry  (#nat #string))
+)

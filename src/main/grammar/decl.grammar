@@ -1,0 +1,5 @@
+(cornerstone
+  (Program   (#name Decl))
+  (Decl      (decl #name Types #type))
+  (Types     (types (* #type)))
+)
