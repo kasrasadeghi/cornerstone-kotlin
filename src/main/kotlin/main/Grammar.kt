@@ -59,19 +59,20 @@ fun validate(grammar: Map<String, Sexp>, program: Sexp, type: String): Boolean {
 
     if (types.last()[0] == '*') {
       check(types.size - 1 <= program.list.size) { "length of $program is not at least ${types.size - 1}" }
+
       // check things before star
-      for (match in program.list.zip(types).take(types.size - 1)) {
-        val (child, childType) = match
+      program.list.zip(types).take(types.size - 1).forEach { (child, childType) ->
         validate(grammar, child, childType)
       }
-      for (child in program.list.drop(types.size - 1)) {
+
+      // check star
+      program.list.drop(types.size - 1).forEach { child ->
         validate(grammar, child, types.last().substring(1))
       }
     } else {
       check(types.size == program.list.size)
           { "when lacking a kleene-*, the Texp must have the same length as the rule" }
-      for (match in program.list.zip(types)) {
-        val (child, childType) = match
+      program.list.zip(types).forEach { (child, childType) ->
         validate(grammar, child, childType)
       }
     }
@@ -94,7 +95,7 @@ fun validate(grammar: Map<String, Sexp>, program: Sexp, type: String): Boolean {
     val choices = rule.list.map { it.value }
     println("  matching $program with choice of $choices")
 
-    for (choice in choices) {
+    choices.forEach { choice ->
       try {
         if (validate(grammar, program, choice)) {
           println("  $program matches choice of $choice")
