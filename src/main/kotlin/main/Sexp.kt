@@ -4,13 +4,17 @@ data class Sexp(var value: String, var list: ArrayList<Sexp> = ArrayList()) {
   constructor(value: String, vararg list: Sexp) : this(value, ArrayList(listOf(*list)))
   constructor(value: String, list: List<Sexp>) : this(value, ArrayList(list))
 
+  companion object {
+    var PREF_LISP = true
+  }
+
   fun push(el: Sexp): Sexp {
     list.add(el)
     return this
   }
 
   override fun toString(): String {
-    return toString(0)
+    return if (PREF_LISP) toLisp() else toString(0)
   }
 
   private fun toString(level: Int): String {
@@ -18,6 +22,10 @@ data class Sexp(var value: String, var list: ArrayList<Sexp> = ArrayList()) {
     return (0 until level).simpleJoin {"  "} +
         "$value\n" +
         list.simpleJoin { it.toString(level + 1)}
+  }
+
+  private fun toLisp(): String {
+    return if (list.isNotEmpty()) "($value ${list.joinToString(separator = " ")})" else value
   }
 
   operator fun get(i: Int) = list[i]

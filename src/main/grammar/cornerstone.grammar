@@ -13,9 +13,9 @@
   (If        (if Expr (* Stmt)))
   (Return    (| RetVoid RetExpr))
   (RetVoid   (return void))
-  (RetExpr   (return Expr Type))
-  (Store     (store Expr Type Expr))
-  (Auto      (auto #name Type))
+  (RetExpr   (return Expr #type))
+  (Store     (store Expr #type Expr))
+  (Auto      (auto #name #type))
   (Do        (do (* Stmt)))
 
   (CallLike  (| Call CallVargs CallTail Become))

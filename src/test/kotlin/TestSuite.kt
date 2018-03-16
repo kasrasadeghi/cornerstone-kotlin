@@ -2,6 +2,7 @@
 import main.Sexp
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.TestFactory
 import parse.parse
@@ -14,6 +15,13 @@ import java.io.IOException
 
 
 class TestSuite {
+  companion object {
+    @JvmStatic @BeforeAll
+    fun setup() {
+      Sexp.PREF_LISP = false
+    }
+  }
+
   private fun validTests(root: String): List<String> =
       File(root).listFiles().toList().sorted()
       .filter { it.name.endsWith(".bb") }

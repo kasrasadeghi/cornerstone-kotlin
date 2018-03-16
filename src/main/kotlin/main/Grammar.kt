@@ -19,17 +19,18 @@ fun parseGrammar(filePath: String): Map<String, Sexp> {
  */
 fun validate(grammar: Map<String, Sexp>, program: Sexp, type: String): Boolean {
   // match primitive rule
-  fun matchValue(rule: String): Boolean {
-    println("match ${program.value} with $rule")
-    return if (rule[0] == '#') {
-      when (rule) {
-        "#name" -> true
-        "#nat" -> program.value[0] != '-' && program.value.toIntOrNull() != null
-        "#string" -> program.value[0] == '"' && program.value.last() == '"'
-        "#type" -> true
-        else -> throw GrammarError("unmatched value class: $rule")
-      }
-    } else if (rule != program.value) throw GrammarError("$rule does not match ${program.value}") else true
+  fun matchValue(type: String): Boolean {
+    println("  match ${program.value} with $type")
+    return when (type) {
+      "#name" -> true
+      "#nat" -> program.value[0] != '-' && program.value.toIntOrNull() != null
+      "#int" -> program.value.toIntOrNull() != null
+      "#string" -> program.value[0] == '"' && program.value.last() == '"'
+      "#type" -> true
+      program.value -> true
+      else -> if (type[0] == '#') throw GrammarError("unmatched value class: $type")
+              else                throw GrammarError("$type does not match ${program.value}")
+    }
   }
 
   // match child sequences using naive regular expressions
@@ -51,9 +52,10 @@ fun validate(grammar: Map<String, Sexp>, program: Sexp, type: String): Boolean {
 
     //endregion
 
+    //TODO consider: just having *Type
     // convert to strings where *'s get appended to front
-    val types = rule.list.map { if (it.size() == 0) it.value else it.value + it[0].value}
-    println("matching ${program.list} with $types")
+    val types = rule.list.map { if (it.size() == 0) it.value else it.value + it[0].value }
+    println("  matching ${program.list} with $types")
 
     if (types.last()[0] == '*') {
       check(types.size - 1 <= program.list.size) { "length of $program is not at least ${types.size - 1}" }
@@ -80,7 +82,7 @@ fun validate(grammar: Map<String, Sexp>, program: Sexp, type: String): Boolean {
 
   // primitive type
   if (type[0].isLowerCase() || type[0] == '#') {
-    println("primitive matching")
+    println("  primitive matching")
     return matchValue(type)
   }
 
@@ -90,12 +92,12 @@ fun validate(grammar: Map<String, Sexp>, program: Sexp, type: String): Boolean {
   // choice operator
   if (rule.value == "|") {
     val choices = rule.list.map { it.value }
-    println("matching \n$program with choice of $choices")
+    println("  matching $program with choice of $choices")
 
     for (choice in choices) {
       try {
         if (validate(grammar, program, choice)) {
-          println("$program matches choice of $choice")
+          println("  $program matches choice of $choice")
           return true
         }
       } catch (e: IllegalStateException) {}
@@ -111,5 +113,3 @@ fun validate(grammar: Map<String, Sexp>, program: Sexp, type: String): Boolean {
 }
 
 class GrammarError(message: String) : IllegalStateException(message)
-
-fun Iterable<String>.join(sep: String = ""): String = joinToString(separator = sep) { it }
