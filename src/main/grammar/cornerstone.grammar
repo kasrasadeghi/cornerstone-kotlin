@@ -5,7 +5,7 @@
   (StrEntry  (#nat #string))
   (Struct    (struct #name (* Field)))
   (Field     (#name #type))
-  (Decl      (decl #name Types))
+  (Decl      (decl #name Types #type))
   (Def       (def #name Params #type (* Stmt)))
 
   (Stmt      (| Let Return If Store Auto CallLike Do))
@@ -40,7 +40,7 @@
   (EQ        (== Type Expr Expr))
   (NE        (!= Type Expr Expr))
 
-  (Value     (| Literal #name StrGet))
+  (Value     (| Literal StrGet #name))
   (Literal   (| #int true false))
   (StrGet    (str-get #int))
 
