@@ -108,7 +108,7 @@ fun validate(grammar: Map<String, Texp>, program: Texp, type: String): Boolean {
   }
 
   // non primitive production
-  if (!matchValue(rule.value)) throw GrammarError("")
+  matchValue(rule.value)
   matchChildren(rule)
   return true
 }
