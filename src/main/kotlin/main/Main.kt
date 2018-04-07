@@ -12,6 +12,7 @@ fun main(args: Array<String>) {
   val grammar = parseGrammar("src/main/grammar/cornerstone.grammar")
   println(program)
   try {
+//    validateGrammar(grammar)
     validate(grammar, program, "Program")
   } catch (e: IllegalStateException) {
     error(e.message ?: e)
